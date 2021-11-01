@@ -3,12 +3,8 @@
 NAME	=	philosophers
 
 HEADERS = 	./includes
-PARSER	= 	
-UTILS	= 	
 
-SRC		=	src/main.c\
-			$(PARSER:%.c=./src/parser/%.c)\
-			$(UTILS:%.c=./src/utils/%.c)
+SRC		=	src/main.c src/utils.c
 
 CC		=	gcc
 DBG		=	-g
@@ -17,7 +13,7 @@ FLAGS	=	#-Werror -Wextra -Wall
 all: $(NAME)
 
 $(NAME): $(SRC)
-	@$(CC) $(SRC) -I$(HEADERS) -o $(NAME) $(DBG) $(FLAGS)
+	@$(CC) $(SRC) -I$(HEADERS) -o $(NAME) $(DBG) $(FLAGS) -lpthread
 
 clean:
 	@rm -rf *.o

@@ -1,16 +1,6 @@
 
 #include "philosophers.h"
 
-void	usleeep(unsigned time)
-{
-	t_ul	start;
-
-	start = time_now();
-	usleep((time - 10) * 1000);
-	while ((time_now() - time) < start)
-		;
-}
-
 void	thinking(t_philo *ph)
 {
 	print_status(ph, THINKING);
@@ -22,7 +12,7 @@ void	eating(t_philo *ph)
 	print_status(ph, EATING);
 	ph->last_meal_time = time_now();
 	ph->eat_count++;
-	usleeep(ph->env->time_to_eat);
+	usleep_wrapper(ph->env->time_to_eat);
 	ph->status = !EATING;
 }
 
@@ -49,5 +39,5 @@ void	died(t_philo *ph)
 void	sleeping(t_philo *ph)
 {
 	print_status(ph, SLEEPING);
-	usleeep(ph->env->time_to_sleep);
+	usleep_wrapper(ph->env->time_to_sleep);
 }

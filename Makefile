@@ -1,19 +1,17 @@
 .PHONEY: all clean fclean re
 
 NAME	=	philosophers
+CC		=	gcc
+CFLAGS	=	#-Werror -Wextra -Wall
 
 HEADERS = 	./includes
-
-SRC		=	src/main.c src/utils.c
-
-CC		=	gcc
-DBG		=	-g
-FLAGS	=	#-Werror -Wextra -Wall
+SOURCES	=	main.c args_parser.c philo_states.c time_utils.c print_utils.c
+SRC		=	$(SOURCES:%.c=./src/%.c)\
 
 all: $(NAME)
 
 $(NAME): $(SRC)
-	@$(CC) $(SRC) -I$(HEADERS) -o $(NAME) $(DBG) $(FLAGS) -lpthread
+	@$(CC) $(SRC) -I$(HEADERS) -o $(NAME) $(CFLAGS) -pthread
 
 clean:
 	@rm -rf *.o
@@ -22,4 +20,3 @@ fclean: clean
 	@-rm -f $(NAME)
 
 re: fclean all
-

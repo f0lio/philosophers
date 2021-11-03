@@ -33,6 +33,7 @@ void	put_forks(t_philo *ph)
 
 void	died(t_philo *ph)
 {
+	ph->env->dead = 1;
 	print_status(ph, DEAD);
 }
 

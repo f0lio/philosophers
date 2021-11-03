@@ -1,7 +1,7 @@
 
 #include "philosophers.h"
 
-unsigned	time_now()
+unsigned long	time_now()
 {
 	struct timeval curr_time;
 
@@ -14,7 +14,6 @@ void	usleep_wrapper(unsigned time)
 	t_ul	start;
 
 	start = time_now();
-	usleep((time - 10) * 1000);
 	while ((time_now() - time) < start)
-		;
+		usleep(100);
 }

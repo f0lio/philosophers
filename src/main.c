@@ -47,7 +47,7 @@ void	supervise(t_env *env)
 				continue ;
 			// unsigned long x = time_now();
 			if (env->philos[i].status != EATING 
-				&& (time_now() - env->philos->last_meal_time > env->time_to_die))
+				&& (time_now() - env->philos->last_meal_time >= env->time_to_die))
 			{
 				// printf("%lu - %lu = %lu\n", env->philos->last_meal_time, x, x - env->philos-> last_meal_time);
 				died(&env->philos[i]);
@@ -109,6 +109,7 @@ int main(int argc, char **argv)
 		return (print_error(ERR_MANY_ARGS));
 	if (parse_args(&env, argc, argv))
 		return (print_error(ERR_INV_ARGS));
+	env.dead = 0; //tmp
 	if (start_simulation(&env))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

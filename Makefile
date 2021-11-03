@@ -2,7 +2,7 @@
 
 NAME	=	philosophers
 CC		=	gcc
-CFLAGS	=	#-Werror -Wextra -Wall
+CFLAGS	=	#-fsanitize=address #-Werror -Wextra -Wall
 
 HEADERS = 	./includes
 SOURCES	=	main.c args_parser.c philo_states.c time_utils.c print_utils.c

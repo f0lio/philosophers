@@ -32,16 +32,17 @@ typedef struct s_philo
 
 typedef struct 			s_env
 {
+	BOOL				dead;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		logger;
 	t_philo				*philos;
-	unsigned			start_time;
-	unsigned			philo_count;
-	unsigned			time_to_eat;
-	unsigned			time_to_die;
-	unsigned			time_to_sleep;
-	unsigned			meal_time;
-	unsigned			max_meals;
+	unsigned long		start_time;
+	long				philo_count;
+	long				time_to_eat;
+	long				time_to_die;
+	long				time_to_sleep;
+	long				meal_time;
+	long				max_meals;
 }						t_env;
 
 /*
@@ -76,7 +77,8 @@ BOOL		parse_args(t_env *env, int argc, char **argv);
 ** time utils
 */
 
-unsigned	time_now();
+unsigned
+long		time_now();
 void		usleep_wrapper(unsigned time);
 
 /*

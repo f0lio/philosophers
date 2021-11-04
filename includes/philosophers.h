@@ -17,7 +17,7 @@
 # define SLEEPING			3
 # define DEAD				4
 
-typedef unsigned long	t_ul;
+typedef unsigned long long t_ul;
 
 typedef struct s_philo
 {
@@ -36,7 +36,7 @@ typedef struct 			s_env
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		logger;
 	t_philo				*philos;
-	unsigned long		start_time;
+	unsigned long long	start_time;
 	long				philo_count;
 	long				time_to_eat;
 	long				time_to_die;
@@ -78,7 +78,7 @@ BOOL		parse_args(t_env *env, int argc, char **argv);
 */
 
 unsigned
-long		time_now();
+long	long	time_now();
 void		usleep_wrapper(unsigned time);
 
 /*

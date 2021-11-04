@@ -45,19 +45,12 @@ void	supervise(t_env *env)
 			flag &= env->philos[i].eat_count;
 			if (env->philos[i].eat_count == env->max_meals)
 				continue ;
-			// unsigned long x = time_now();
 			if (env->philos[i].status != EATING 
 				&& (time_now() - env->philos->last_meal_time >= env->time_to_die))
-			{
-				// printf("%lu - %lu = %lu\n", env->philos->last_meal_time, x, x - env->philos-> last_meal_time);
-				died(&env->philos[i]);
-				return ;
-			}
+				return died(&env->philos[i]);
 		}
-		// printf("f[%d]\n", flag);
 		if (flag == env->max_meals)
 			break ;
-		// usleep(20);
 	}
 	
 }
@@ -73,8 +66,7 @@ BOOL	create_threads(t_env *env)
 
 		if (pthread_create(&threads[i], NULL, philo_routine, &env->philos[i]))
 			return (print_error(ERR_THRD_CREATE));
-		//delay
-		usleep(100);
+		usleep(60);
 	}
 	supervise(env);
 	return (0);
@@ -98,8 +90,9 @@ void	*philo_routine(void *philo)
 
 int main(int argc, char **argv)
 {
-	t_env	env;
+	t_env	*env;
 
+	env = (t_env*)malloc(sizeof(t_env));
 	if (argc < 5)
 	{
 		printf("Error\n%s\n", ERR_FEW_ARGS);
@@ -107,10 +100,10 @@ int main(int argc, char **argv)
 	}
 	else if (argc > 6)
 		return (print_error(ERR_MANY_ARGS));
-	if (parse_args(&env, argc, argv))
+	if (parse_args(env, argc, argv))
 		return (print_error(ERR_INV_ARGS));
-	env.dead = 0; //tmp
-	if (start_simulation(&env))
+	env->dead = 0;
+	if (start_simulation(env))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

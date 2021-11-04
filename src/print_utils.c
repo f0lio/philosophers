@@ -65,9 +65,11 @@ void	print_status(t_philo *ph, BOOL status)
 		msg = "is sleeping";
 	else
 	{
-		printf("%lu %d died\n", time_now() - ph->env->start_time, ph->id + 1); //?
+		printf("%llu %d died\n", time_now() - ph->env->start_time, ph->id + 1); //?
 		return ;
 	}
-	printf("%lu %d %s\n", time_now() - ph->env->start_time, ph->id + 1, msg);
+	//printf("sub: %lu, %llu\n", time_now(), ph->env->start_time);
+	printf("%llu %d %s\n", time_now() - ph->env->start_time, ph->id + 1, msg); 
 	pthread_mutex_unlock(&ph->env->logger);
 }
+

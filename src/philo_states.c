@@ -6,6 +6,15 @@ void	thinking(t_philo *ph)
 	print_status(ph, THINKING);
 }
 
+
+void	take_forks(t_philo *ph)
+{
+	pthread_mutex_lock(&ph->env->forks[ph->id]);
+	print_status(ph, TAKEN_FORK);
+	pthread_mutex_lock(&ph->env->forks[(ph->id + 1) % ph->env->philo_count]);
+	print_status(ph, TAKEN_FORK);
+}
+
 void	eating(t_philo *ph)
 {
 	ph->status = EATING;
@@ -14,14 +23,6 @@ void	eating(t_philo *ph)
 	ph->eat_count++;
 	usleep_wrapper(ph->env->time_to_eat);
 	ph->status = !EATING;
-}
-
-void	take_forks(t_philo *ph)
-{
-	pthread_mutex_lock(&ph->env->forks[ph->id]);
-	print_status(ph, TAKEN_FORK);
-	pthread_mutex_lock(&ph->env->forks[(ph->id + 1) % ph->env->philo_count]);
-	print_status(ph, TAKEN_FORK);
 }
 
 void	put_forks(t_philo *ph)

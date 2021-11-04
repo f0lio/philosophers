@@ -1,7 +1,7 @@
 
 #include "philosophers.h"
 
-unsigned long	time_now()
+unsigned long long time_now()
 {
 	struct timeval curr_time;
 

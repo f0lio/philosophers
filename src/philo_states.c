@@ -15,14 +15,21 @@ void	take_forks(t_philo *ph)
 	print_status(ph, TAKEN_FORK);
 }
 
+# define RED                "\033[1;31m"
+# define GREEN              "\033[1;32m"
+# define WHITE              "\033[1;37m"
+# define NO_COLOR           "\033[0m"
+
 void	eating(t_philo *ph)
 {
-	ph->status = EATING;
+	pthread_mutex_lock(&ph->eat_mutex);
+	put_str(GREEN);
 	print_status(ph, EATING);
+	put_str(NO_COLOR);
 	ph->last_meal_time = time_now();
 	ph->eat_count++;
 	usleep_wrapper(ph->env->time_to_eat);
-	ph->status = !EATING;
+	pthread_mutex_unlock(&ph->eat_mutex);
 }
 
 void	put_forks(t_philo *ph)

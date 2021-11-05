@@ -27,7 +27,7 @@ typedef struct s_philo
 	unsigned		dead_time;
 	unsigned		eat_count;
 	t_ul			last_meal_time;
-	// pthread_mutex_t	eat_mutex;
+	pthread_mutex_t	eat_mutex;
 }					t_philo;
 
 typedef struct 			s_env

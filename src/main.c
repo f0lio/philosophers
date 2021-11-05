@@ -24,9 +24,8 @@ BOOL	start_simulation(t_env *env)
 		env->philos[i].id = i;
 		env->philos[i].status = 0;
 		env->philos[i].eat_count = 0;
-		env->philos[i].last_meal_time = env->start_time;
 		env->philos[i].env = env;
-		// pthread_mutex_init(&env->philos[i].eat_mutex, NULL);
+		pthread_mutex_init(&env->philos[i].eat_mutex, NULL);
 	}
 	return (create_threads(env));
 }
@@ -45,9 +44,10 @@ void	supervise(t_env *env)
 			flag &= env->philos[i].eat_count;
 			if (env->philos[i].eat_count == env->max_meals)
 				continue ;
-			if (env->philos[i].status != EATING 
-				&& (time_now() - env->philos->last_meal_time >= env->time_to_die))
+			pthread_mutex_lock(&env->philos[i].eat_mutex);
+			if (time_now() - env->philos[i].last_meal_time >= env->time_to_die)
 				return died(&env->philos[i]);
+			pthread_mutex_unlock(&env->philos[i].eat_mutex);
 		}
 		if (flag == env->max_meals)
 			break ;
@@ -63,7 +63,7 @@ BOOL	create_threads(t_env *env)
 	i = -1;
 	while (++i < env->philo_count)
 	{
-
+		env->philos[i].last_meal_time = env->start_time;
 		if (pthread_create(&threads[i], NULL, philo_routine, &env->philos[i]))
 			return (print_error(ERR_THRD_CREATE));
 		usleep(60);

@@ -11,44 +11,33 @@ size_t str_len(char *s)
 	return (l);
 }
 
-void	print_long(long l)
+void	put_str(int fd, char *s)
 {
-	long x;
-
-	x = 0;
-	if (l < 0)
-	{
-		put_char('-');
-		x = -l;
-	}
-	else
-		x = l;
-	if (x < 10)
-		put_char(x + 48);
-	else
-	{
-		print_long(x / 10);
-		put_char((x % 10) + 48);
-	}
-}
-
-void	put_char(char c)
-{
-	write(1, &c, 1);
-}
-
-void	put_str(char *s)
-{
-	write(1, s, str_len(s));
+	write(fd, s, str_len(s));
 }
 
 BOOL	print_error(char *msg)
 {
-	put_str("Error\n");
-	put_str(msg);
-	put_str("\n");
+	put_str(STDERR_FILENO, "Error\n");
+	put_str(STDERR_FILENO, msg);
+	put_str(STDERR_FILENO, "\n");
 	return (1);
 }
+
+void		clean_data(t_env *env)
+{
+	int i;
+
+	i = 0;
+	while (i < env->philo_count)
+	{
+		pthread_mutex_destroy(&env->forks[i]);
+		pthread_mutex_destroy(&env->philos[i].eat_mutex);
+		i++;
+	}
+	pthread_mutex_destroy(&env->logger);
+}
+
 
 void	print_status(t_philo *ph, BOOL status)
 {
@@ -65,11 +54,9 @@ void	print_status(t_philo *ph, BOOL status)
 		msg = "is sleeping";
 	else
 	{
-		printf("%llu %d died\n", time_now() - ph->env->start_time, ph->id + 1); //?
+		printf("%llu %d died\n", time_now() - ph->env->start_time, ph->id + 1);
 		return ;
 	}
-	//printf("sub: %lu, %llu\n", time_now(), ph->env->start_time);
 	printf("%llu %d %s\n", time_now() - ph->env->start_time, ph->id + 1, msg); 
 	pthread_mutex_unlock(&ph->env->logger);
 }
-

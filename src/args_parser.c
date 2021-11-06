@@ -3,7 +3,7 @@
 
 int	str_to_int(char *s)
 {
-	return (atoi(s));
+	return (atoi(s)); //?????
 }
 
 int	check_and_parse(char *s)

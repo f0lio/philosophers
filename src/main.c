@@ -34,7 +34,9 @@ void	supervise(t_env *env)
 {
 	int		i;
 	int		flag;
+	BOOL	quit;
 
+	quit = 0;
 	while (1)
 	{
 		i = -1;
@@ -44,15 +46,25 @@ void	supervise(t_env *env)
 			flag &= env->philos[i].eat_count;
 			if (env->philos[i].eat_count == env->max_meals)
 				continue ;
-			pthread_mutex_lock(&env->philos[i].eat_mutex);
-			if (time_now() - env->philos[i].last_meal_time >= env->time_to_die)
-				return died(&env->philos[i]);
-			pthread_mutex_unlock(&env->philos[i].eat_mutex);
+			if (env->philos[i].status != EATING)
+			{
+				pthread_mutex_lock(&env->philos[i].eat_mutex);
+				if ((time_now() - env->philos[i].last_meal_time) >= env->time_to_die)
+				{
+					died(&env->philos[i]);
+					quit = 1;
+					break ;
+				}
+				pthread_mutex_unlock(&env->philos[i].eat_mutex);
+			}
 		}
+		if (quit)
+			break ;
 		if (flag == env->max_meals)
 			break ;
+		usleep(100);
 	}
-	
+	clean_data(env);
 }
 
 BOOL	create_threads(t_env *env)
@@ -93,6 +105,8 @@ int main(int argc, char **argv)
 	t_env	*env;
 
 	env = (t_env*)malloc(sizeof(t_env));
+	if (!env)
+		return (print_error(ERR_MALLOC));
 	if (argc < 5)
 	{
 		printf("Error\n%s\n", ERR_FEW_ARGS);

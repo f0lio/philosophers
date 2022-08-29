@@ -77,8 +77,8 @@ void		died(t_philo *ph);
 ** Parser
 */
 
-int			str_to_int(char *s);
-int			check_and_parse(char *s);
+t_ll		str_to_int(char *s);
+t_ll		check_and_parse(char *s);
 BOOL		parse_args(t_env *env, int argc, char **argv);
 
 /*
